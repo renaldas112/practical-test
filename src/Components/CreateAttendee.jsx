@@ -1,73 +1,77 @@
+import { Container, Form, Row, Col, FormGroup, Input } from "reactstrap";
 import {
-  Container,
-  Form,
-  Row,
-  Col,
-  FormGroup,
-  Input,
-  Button,
-} from "reactstrap";
-import { FormTitle, MainForm, MainTitle } from "../StyledComponents/MyStyledComponents";
+  FormTitle,
+  MainForm,
+  MainTitle,
+} from "../StyledComponents/MyStyledComponents";
 
-export function CreateAttendee() {
+export function CreateAttendee(props) {
+  const useHandleOnChange = (e) => {
+    props.setAttendee({
+      ...props.attendee,
+      [e.target.name]: e.target.value,
+    });
+    console.log(e.target.value)
+  };
+
   return (
-    <Container>
-      <MainTitle>Management Dashbaord</MainTitle>
-      <MainForm>
-        <FormTitle>Create Attendee</FormTitle>
-        <Form>
-          <Row>
-            <Col md={2}>
-              <FormGroup>
-                <Input
-                  id="firstName"
-                  name="firstName"
-                  placeholder="First Name"
-                  type="text"
-                  required
-                />
-              </FormGroup>
-            </Col>
-            <Col md={2}>
-              <FormGroup>
-                <Input
-                  id="lastName"
-                  name="lastName"
-                  placeholder="Last Name"
-                  type="text"
-                  required
-                />
-              </FormGroup>
-            </Col>
-            <Col md={2}>
-              <FormGroup>
-                <Input
-                  id="age"
-                  name="age"
-                  type="number"
-                  placeholder="Age"
-                  min="1"
-                  required
-                />
-              </FormGroup>
-            </Col>
-            <Col md={2}>
-              <FormGroup>
-                <Input
-                  id="lemail"
-                  name="email"
-                  placeholder="Email"
-                  type="email"
-                  required
-                />
-              </FormGroup>
-            </Col>
-            <Col md={1}>
-              <Button>Submit</Button>
-            </Col>
-          </Row>
-        </Form>
-      </MainForm>
-    </Container>
+    <>
+      <Container>
+        <MainTitle>Management Dashbaord</MainTitle>
+        <MainForm>
+          <FormTitle>Create Attendee</FormTitle>
+          <Form>
+            <Row>
+              <Col md={2}>
+                <FormGroup>
+                  <Input
+                    name="firstName"
+                    placeholder="First Name"
+                    type="text"
+                    onChange={useHandleOnChange}
+                    required
+                  />
+                </FormGroup>
+              </Col>
+              <Col md={2}>
+                <FormGroup>
+                  <Input
+                    name="lastName"
+                    placeholder="Last Name"
+                    type="text"
+                    onChange={useHandleOnChange}
+                    required
+                  />
+                </FormGroup>
+              </Col>
+              <Col md={2}>
+                <FormGroup>
+                  <Input
+                    name="age"
+                    type="number"
+                    placeholder="Age"
+                    min="1"
+                    onChange={useHandleOnChange}
+                    required
+                  />
+                </FormGroup>
+              </Col>
+              <Col md={2}>
+                <FormGroup>
+                  <Input
+                    name="email"
+                    placeholder="Email"
+                    type="email"
+                    onChange={useHandleOnChange}
+                    required
+                  />
+                </FormGroup>
+              </Col>
+              <Col md={1}>{props.children}</Col>
+            </Row>
+          </Form>
+        </MainForm>
+      </Container>
+    </>
   );
 }
