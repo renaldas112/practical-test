@@ -20,3 +20,15 @@ display: flex;
 align-items: baseline;
 gap: 50px;
 `
+
+export const AttendeeName = styled.div`
+display: flex;
+gap: 0.5rem;
+min-width: 250px;
+`
+
+export const AttendeeInfo = styled.div`
+display: flex;
+gap: 1rem;
+min-width: 300px;
+`
