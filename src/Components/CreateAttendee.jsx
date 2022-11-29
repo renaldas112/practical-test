@@ -11,7 +11,6 @@ export function CreateAttendee(props) {
       ...props.attendee,
       [e.target.name]: e.target.value,
     });
-    console.log(e.target.value)
   };
 
   return (

@@ -1,10 +1,11 @@
 import { Container } from "reactstrap";
+import { FormTitle } from "../StyledComponents/MyStyledComponents";
 
 export function AttendeeList(props) {
-
   return (
     <Container>
-        {props.children}
+      <FormTitle>Attendee list</FormTitle>
+      {props.children}
     </Container>
   );
 }

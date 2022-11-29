@@ -15,3 +15,8 @@ export const MainForm = styled.div`
 export const FormTitle = styled.h2`
 margin: 50px 0;
 `
+export const Attendee = styled.div`
+display: flex;
+align-items: baseline;
+gap: 50px;
+`
