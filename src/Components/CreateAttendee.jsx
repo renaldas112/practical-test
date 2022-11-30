@@ -7,8 +7,8 @@ import {
 
 export function CreateAttendee(props) {
   const useHandleOnChange = (e) => {
-    props.setAttendee({
-      ...props.attendee,
+    props.setAttendeeInfo({
+      ...props.attendeeInfo,
       [e.target.name]: e.target.value,
     });
   };
