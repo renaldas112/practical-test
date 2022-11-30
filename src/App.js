@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from "react";
-import { Container, Row, Col, Button } from "reactstrap";
+import { Container, Row, Button } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { CreateAttendee } from "./Components/CreateAttendee";
 import { AttendeeList } from "./Components/AttendeeList";
@@ -8,8 +8,6 @@ import {
   AttendeeName,
   AttendeeInfo,
 } from "./StyledComponents/MyStyledComponents";
-import axios from "axios";
-import { updateJSON } from "./db";
 
 export default function App() {
   const [attendeeInfo, setAttendeeInfo] = useState({
@@ -19,52 +17,6 @@ export default function App() {
     email: "",
   });
   const [attendees, setAttendees] = useState([]);
-
-  useEffect(() => {
-    const fetchAttendees = async () => {
-      const response = await fetch("attendees.json");
-      const data = await response.json();
-      setAttendees(data);
-    };
-    fetchAttendees();
-  }, []);
-
-  const deleteAttendee = async (id) => {
-    axios.get("attendees.json", attendees).then((res) => {
-      if (res.status === 200) {
-        setAttendees(
-          attendees.filter((attendee) => {
-            return attendee.id !== id;
-          })
-        );
-      }
-    });
-    const newData = attendees;
-    // updateJSON(newData);
-  };
-
-  const addAttendee = async (firstName, lastName, age, email) => {
-    let response = await fetch("attendees.json", {
-      method: "POST",
-      body: JSON.stringify({
-        firstName: firstName,
-        lastName: lastName,
-        age: age,
-        email: email,
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    });
-    let data = await response.json();
-    setAttendees((attendees) => [data, ...attendees]);
-    setAttendeeInfo({
-      firstName: "",
-      lastName: "",
-      age: "",
-      email: "",
-    });
-  };
 
   return (
     <>
@@ -86,12 +38,7 @@ export default function App() {
                     <p>Email: {attendee.email}</p>
                   </AttendeeInfo>
                   <Button color="primary">Edit</Button>
-                  <Button
-                    color="danger"
-                    onClick={() => deleteAttendee(attendee.id)}
-                  >
-                    Delete
-                  </Button>
+                  <Button color="danger">Delete</Button>
                 </Attendee>
               </Row>
             </Container>
