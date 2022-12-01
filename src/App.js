@@ -8,11 +8,10 @@ import {
   AttendeeName,
   AttendeeInfo,
 } from "./StyledComponents/MyStyledComponents";
-import useLocalStorage from "./hooks/useLocalStorage";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 export default function App() {
-  const [attendeeInfo, setAttendeeInfo] = useState({
+  const [attendee, setAttendee] = useState({
     firstName: "",
     lastName: "",
     age: null,
@@ -21,30 +20,16 @@ export default function App() {
 
   const [addAttendeeInfo, setAddAttendeeInfo] = useState([]);
 
-  const [localAttendee, setLocalAttendee] = useLocalStorage("attendees", []);
-
-  // useEffect(() => {
-  //   if(addAttendeeInfo === null) {
-  //     return;
-  //   } else {
-  //     setLocalAttendee(addAttendeeInfo)
-  //   }
-  // });
+  const onSubmit = (e) => {
+    e.preventDefault();
+    setAddAttendeeInfo(addAttendeeInfo.concat(attendee));
+    document.querySelector("form").reset();
+  };
 
   return (
     <>
-      <CreateAttendee
-        attendeeInfo={attendeeInfo}
-        setAttendeeInfo={setAttendeeInfo}
-      >
-        <Button
-          onClick={() => {
-            setAddAttendeeInfo(addAttendeeInfo.concat(attendeeInfo));
-            setLocalAttendee(addAttendeeInfo);
-          }}
-        >
-          Submit
-        </Button>
+      <CreateAttendee attendee={attendee} setAttendee={setAttendee}>
+        <Button onClick={onSubmit}>Submit</Button>
       </CreateAttendee>
       <AttendeeList>
         {addAttendeeInfo.map((attendee) => {
