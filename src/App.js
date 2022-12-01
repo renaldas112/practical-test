@@ -1,8 +1,9 @@
-import { React, useEffect, useState } from "react";
+import { React, useState } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { CreateAttendee } from "./Components/CreateAttendee";
 import { AttendeeList } from "./Components/AttendeeList";
+import { EditModal } from "./Components/EditModal";
 import {
   Attendee,
   AttendeeName,
@@ -10,7 +11,10 @@ import {
 } from "./StyledComponents/MyStyledComponents";
 import { v4 as uuidv4 } from "uuid";
 
-export default function App() {
+//TODO: finish edit
+// 
+
+export default function App({openModal}) {
   const [attendee, setAttendee] = useState({
     id: "",
     firstName: "",
@@ -34,7 +38,10 @@ export default function App() {
     setAddAttendeeInfo(newAttendeesList);
   };
 
-  const handleEdit = () => {};
+  const handleEdit = (id) => {
+    const editableAttendee = addAttendeeInfo.findIndex((att) => att.id === id);
+    console.log(addAttendeeInfo[editableAttendee]);
+  };
 
   const noAttendees = <Col className="text-center">No attendees added</Col>;
 
@@ -60,7 +67,9 @@ export default function App() {
                     </AttendeeInfo>
                     <Button
                       color="primary"
-                      onClick={() => handleEdit(attendee.id)}
+                      onClick={() => {
+                        handleEdit(attendee.id);
+                      }}
                     >
                       Edit
                     </Button>
@@ -79,6 +88,7 @@ export default function App() {
       ) : (
         noAttendees
       )}
+      <EditModal />
     </>
   );
 }
