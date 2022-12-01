@@ -4,12 +4,14 @@ import {
   MainForm,
   MainTitle,
 } from "../StyledComponents/MyStyledComponents";
+import { v4 as uuidv4 } from "uuid";
 
 export function CreateAttendee(props) {
   const useHandleOnChange = (e) => {
     props.setAttendee({
       ...props.attendee,
       [e.target.name]: e.target.value,
+      id: uuidv4(),
     });
   };
 

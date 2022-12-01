@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export default function App() {
   const [attendee, setAttendee] = useState({
+    id: "",
     firstName: "",
     lastName: "",
     age: null,
@@ -20,16 +21,23 @@ export default function App() {
 
   const [addAttendeeInfo, setAddAttendeeInfo] = useState([]);
 
-  const onSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setAddAttendeeInfo(addAttendeeInfo.concat(attendee));
     document.querySelector("form").reset();
   };
 
+  const handleDelete = (id) => {
+    const newAttendeesList = addAttendeeInfo.filter(
+      (attend) => attend.id !== id
+    );
+    setAddAttendeeInfo(newAttendeesList);
+  };
+
   return (
     <>
       <CreateAttendee attendee={attendee} setAttendee={setAttendee}>
-        <Button onClick={onSubmit}>Submit</Button>
+        <Button onClick={handleSubmit}>Submit</Button>
       </CreateAttendee>
       <AttendeeList>
         {addAttendeeInfo.map((attendee) => {
@@ -46,7 +54,9 @@ export default function App() {
                     <p>Email: {attendee.email}</p>
                   </AttendeeInfo>
                   <Button color="primary">Edit</Button>
-                  <Button color="danger">Delete</Button>
+                  <Button color="danger" onClick={() => handleDelete(attendee.id)}>
+                    Delete
+                  </Button>
                 </Attendee>
               </Row>
             </Container>
