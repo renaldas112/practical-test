@@ -3,8 +3,11 @@ import { Container, Row, Col, Button } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { CreateAttendee } from "./Components/CreateAttendee";
 import { AttendeeList } from "./Components/AttendeeList";
+import { NoAttendees } from "./Components/NoAttendees";
 import { EditModal } from "./Components/EditModal";
+import Modal from "react-modal";
 import {
+  MainTitle,
   Attendee,
   AttendeeName,
   AttendeeInfo,
@@ -12,9 +15,20 @@ import {
 import { v4 as uuidv4 } from "uuid";
 
 //TODO: finish edit
-// 
 
-export default function App({openModal}) {
+const customModalStyling = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
+
+export default function App() {
+  Modal.setAppElement("#root");
   const [attendee, setAttendee] = useState({
     id: "",
     firstName: "",
@@ -24,11 +38,13 @@ export default function App({openModal}) {
   });
 
   const [addAttendeeInfo, setAddAttendeeInfo] = useState([]);
+  const [modalIsOpen, setIsOpen] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setAddAttendeeInfo(addAttendeeInfo.concat(attendee));
     document.querySelector("form").reset();
+    console.log(attendee.id);
   };
 
   const handleDelete = (id) => {
@@ -39,14 +55,36 @@ export default function App({openModal}) {
   };
 
   const handleEdit = (id) => {
-    const editableAttendee = addAttendeeInfo.findIndex((att) => att.id === id);
-    console.log(addAttendeeInfo[editableAttendee]);
+    editableAttendee = addAttendeeInfo.findIndex((att) => att.id === id);
+    console.log(addAttendeeInfo[editableAttendee].id);
+    console.log(addAttendeeInfo);
   };
 
-  const noAttendees = <Col className="text-center">No attendees added</Col>;
+  const handleOnEditSubmit = (e, id) => {
+    e.preventDefault();
+    [e.target.name] = e.target.value;
+    const changedArray = addAttendeeInfo.filter((attend) => attend.id === id);
+    setAddAttendeeInfo(addAttendeeInfo.concat(changedArray));
+  };
+
+  let editableAttendee = undefined;
+  //TODO: stuck here
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {
+    console.log("Editing...");
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   return (
     <>
+      <MainTitle>Management Dashboard</MainTitle>
       <CreateAttendee attendee={attendee} setAttendee={setAttendee}>
         <Button onClick={handleSubmit}>Submit</Button>
       </CreateAttendee>
@@ -69,6 +107,7 @@ export default function App({openModal}) {
                       color="primary"
                       onClick={() => {
                         handleEdit(attendee.id);
+                        openModal();
                       }}
                     >
                       Edit
@@ -86,9 +125,22 @@ export default function App({openModal}) {
           })}
         </AttendeeList>
       ) : (
-        noAttendees
+        <NoAttendees />
       )}
-      <EditModal />
+      <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customModalStyling}
+        contentLabel="Example Modal"
+      >
+        <Button style={{ float: "right" }} onClick={closeModal}>
+          X
+        </Button>
+        <EditModal attendee={attendee} setAttendee={setAttendee}>
+          <Button onClick={handleOnEditSubmit}>Submit</Button>
+        </EditModal>
+      </Modal>
     </>
   );
 }

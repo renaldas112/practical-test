@@ -1,8 +1,8 @@
-import { Container, Form, Row, Col, FormGroup, Input } from "reactstrap";
+import { Form, Row, Col, FormGroup, Input } from "reactstrap";
 import {
+  CreateAttendeeStyled,
   FormTitle,
   MainForm,
-  MainTitle,
 } from "../StyledComponents/MyStyledComponents";
 import { v4 as uuidv4 } from "uuid";
 
@@ -17,10 +17,9 @@ export function CreateAttendee(props) {
 
   return (
     <>
-      <Container>
-        <MainTitle>Management Dashbaord</MainTitle>
-        <MainForm>
-          <FormTitle>Create Attendee</FormTitle>
+      <CreateAttendeeStyled className="card">
+        <MainForm className="card-body">
+          <FormTitle className="card-header">Create Attendee</FormTitle>
           <Form>
             <Row>
               <Col md={2}>
@@ -72,7 +71,7 @@ export function CreateAttendee(props) {
             </Row>
           </Form>
         </MainForm>
-      </Container>
+      </CreateAttendeeStyled>
     </>
   );
 }

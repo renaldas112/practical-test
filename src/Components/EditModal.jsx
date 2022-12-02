@@ -1,52 +1,29 @@
 import Modal from "react-modal";
-import { useState } from 'react'
-import { Form, Row, Col, FormGroup, Input } from "reactstrap";
+import { Form, Row, Col, FormGroup, Input, Button } from "reactstrap";
+import { EditModalContent } from "../StyledComponents/MyStyledComponents";
 
-const customStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-    },
+export function EditModal(props) {
+  const useHandleOnChange = (e) => {
+    props.setAttendee({
+      ...props.attendee,
+      [e.target.name]: e.target.value,
+    });
   };
-
-export function EditModal() {
   Modal.setAppElement("#root");
 
-  const [modalIsOpen, setIsOpen] = useState(false);
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function afterOpenModal() {
-    console.log("Editing...")
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-
   return (
-    <Modal
-      isOpen={modalIsOpen}
-      onAfterOpen={afterOpenModal}
-      onRequestClose={closeModal}
-      style={customStyles}
-      contentLabel="Example Modal"
-    >
+    <EditModalContent>
       <Form>
+        {props.children}
         <Row>
           <Col md={2}>
             <FormGroup>
               <Input
                 name="firstName"
-                placeholder="First Name"
+                placeholder="cia bus bbz"
                 type="text"
                 required
+                onChange={useHandleOnChange}
               />
             </FormGroup>
           </Col>
@@ -54,9 +31,10 @@ export function EditModal() {
             <FormGroup>
               <Input
                 name="lastName"
-                placeholder="Last Name"
+                placeholder="cia bus bbz"
                 type="text"
                 required
+                onChange={useHandleOnChange}
               />
             </FormGroup>
           </Col>
@@ -65,19 +43,26 @@ export function EditModal() {
               <Input
                 name="age"
                 type="number"
-                placeholder="Age"
+                placeholder="cia bus bbz"
                 min="1"
                 required
+                onChange={useHandleOnChange}
               />
             </FormGroup>
           </Col>
           <Col md={2}>
             <FormGroup>
-              <Input name="email" placeholder="Email" type="email" required />
+              <Input
+                name="email"
+                placeholder="cia bus bbz"
+                type="email"
+                required
+                onChange={useHandleOnChange}
+              />
             </FormGroup>
           </Col>
         </Row>
       </Form>
-    </Modal>
+    </EditModalContent>
   );
 }
