@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import { Container, Row, Col, Button } from "reactstrap";
+import { Row, Col } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { CreateAttendee } from "./Components/CreateAttendee";
 import { AttendeeList } from "./Components/AttendeeList";
@@ -8,11 +8,18 @@ import { EditModal } from "./Components/EditModal";
 import Modal from "react-modal";
 import {
   MainTitle,
+  ButtonSubmit,
+  ButtonEdit,
+  ButtonDelete,
   Attendee,
   AttendeeName,
   AttendeeInfo,
+  MinutesAgoStyled,
 } from "./StyledComponents/MyStyledComponents";
 import { v4 as uuidv4 } from "uuid";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import moment from "moment";
 
 //TODO: finish edit
 
@@ -37,14 +44,31 @@ export default function App() {
     email: "",
   });
 
+  const [selectedAttendee, setSelectedAttendee] = useState("");
+
   const [addAttendeeInfo, setAddAttendeeInfo] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setAddAttendeeInfo(addAttendeeInfo.concat(attendee));
-    document.querySelector("form").reset();
-    console.log(attendee.id);
+    if (
+      attendee.firstName === "" ||
+      attendee.lastName === "" ||
+      attendee.age === "" ||
+      attendee.email === ""
+    ) {
+      alert("Please fill in required form");
+    } else {
+      setAddAttendeeInfo(addAttendeeInfo.concat(attendee));
+      setAttendee({
+        id: "",
+        firstName: "",
+        lastName: "",
+        age: null,
+        email: "",
+      });
+      document.querySelector("form").reset();
+    }
   };
 
   const handleDelete = (id) => {
@@ -54,21 +78,25 @@ export default function App() {
     setAddAttendeeInfo(newAttendeesList);
   };
 
+  let editableAttendee = undefined;
+
   const handleEdit = (id) => {
     editableAttendee = addAttendeeInfo.findIndex((att) => att.id === id);
-    console.log(addAttendeeInfo[editableAttendee].id);
-    console.log(addAttendeeInfo);
+    setSelectedAttendee({
+      id: uuidv4(),
+      firstName: "",
+      lastName: "",
+      age: null,
+      email: "",
+    });
   };
 
-  const handleOnEditSubmit = (e, id) => {
-    e.preventDefault();
-    [e.target.name] = e.target.value;
-    const changedArray = addAttendeeInfo.filter((attend) => attend.id === id);
-    setAddAttendeeInfo(addAttendeeInfo.concat(changedArray));
+  const handleOnEditSubmit = (id) => {
+    editableAttendee = addAttendeeInfo.findIndex((att) => att.id === id);
+    addAttendeeInfo.splice(editableAttendee, 1, selectedAttendee);
   };
 
-  let editableAttendee = undefined;
-  //TODO: stuck here
+  const dateTimeAgo = moment(new Date()).fromNow();
 
   function openModal() {
     setIsOpen(true);
@@ -86,41 +114,46 @@ export default function App() {
     <>
       <MainTitle>Management Dashboard</MainTitle>
       <CreateAttendee attendee={attendee} setAttendee={setAttendee}>
-        <Button onClick={handleSubmit}>Submit</Button>
+        <ButtonSubmit className="btn" onClick={handleSubmit}>
+          Submit
+        </ButtonSubmit>
       </CreateAttendee>
       {addAttendeeInfo.length ? (
         <AttendeeList>
           {addAttendeeInfo.map((attendee) => {
             return (
-              <Container key={uuidv4()}>
+              <Attendee key={uuidv4()}>
                 <Row>
-                  <Attendee>
-                    <AttendeeName>
-                      <h3>{attendee.firstName}</h3>
-                      <h3>{attendee.lastName}</h3>
-                    </AttendeeName>
-                    <AttendeeInfo>
-                      <p>Age: {attendee.age}</p>
-                      <p>Email: {attendee.email}</p>
-                    </AttendeeInfo>
-                    <Button
-                      color="primary"
+                  <AttendeeName>
+                    <h3>{attendee.firstName}</h3>
+                    <h3>{attendee.lastName}</h3>
+                  </AttendeeName>
+                  <MinutesAgoStyled>{dateTimeAgo}</MinutesAgoStyled>
+                </Row>
+                <Col className="d-flex border-bottom align-items-baseline">
+                  <AttendeeInfo>
+                    <p>Age: {attendee.age}</p>
+                    <p>Email: {attendee.email}</p>
+                  </AttendeeInfo>
+                  <Col className="d-flex flex-row">
+                    <ButtonEdit
+                      className="btn"
                       onClick={() => {
                         handleEdit(attendee.id);
                         openModal();
                       }}
                     >
-                      Edit
-                    </Button>
-                    <Button
-                      color="danger"
+                      <FontAwesomeIcon icon={faPenToSquare} />
+                    </ButtonEdit>
+                    <ButtonDelete
+                      className="btn"
                       onClick={() => handleDelete(attendee.id)}
                     >
-                      Delete
-                    </Button>
-                  </Attendee>
-                </Row>
-              </Container>
+                      <FontAwesomeIcon icon={faTrashCan} />
+                    </ButtonDelete>
+                  </Col>
+                </Col>
+              </Attendee>
             );
           })}
         </AttendeeList>
@@ -134,11 +167,20 @@ export default function App() {
         style={customModalStyling}
         contentLabel="Example Modal"
       >
-        <Button style={{ float: "right" }} onClick={closeModal}>
-          X
-        </Button>
-        <EditModal attendee={attendee} setAttendee={setAttendee}>
-          <Button onClick={handleOnEditSubmit}>Submit</Button>
+        <EditModal
+          selectedAttendee={selectedAttendee}
+          setSelectedAttendee={setSelectedAttendee}
+        >
+          <ButtonSubmit
+            className="btn"
+            type="button"
+            onClick={() => {
+              handleOnEditSubmit();
+              closeModal();
+            }}
+          >
+            Submit
+          </ButtonSubmit>
         </EditModal>
       </Modal>
     </>

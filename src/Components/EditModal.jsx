@@ -1,11 +1,11 @@
 import Modal from "react-modal";
-import { Form, Row, Col, FormGroup, Input, Button } from "reactstrap";
+import { Form, Row, Col, FormGroup, Input } from "reactstrap";
 import { EditModalContent } from "../StyledComponents/MyStyledComponents";
 
 export function EditModal(props) {
   const useHandleOnChange = (e) => {
-    props.setAttendee({
-      ...props.attendee,
+    props.setSelectedAttendee({
+      ...props.selectedAttendee,
       [e.target.name]: e.target.value,
     });
   };
@@ -13,16 +13,14 @@ export function EditModal(props) {
 
   return (
     <EditModalContent>
-      <Form>
-        {props.children}
+      <Form className="d-flex flex-row">
         <Row>
           <Col md={2}>
             <FormGroup>
               <Input
                 name="firstName"
-                placeholder="cia bus bbz"
+                placeholder="First Name"
                 type="text"
-                required
                 onChange={useHandleOnChange}
               />
             </FormGroup>
@@ -31,9 +29,8 @@ export function EditModal(props) {
             <FormGroup>
               <Input
                 name="lastName"
-                placeholder="cia bus bbz"
+                placeholder="Last Name"
                 type="text"
-                required
                 onChange={useHandleOnChange}
               />
             </FormGroup>
@@ -43,9 +40,8 @@ export function EditModal(props) {
               <Input
                 name="age"
                 type="number"
-                placeholder="cia bus bbz"
+                placeholder="Age"
                 min="1"
-                required
                 onChange={useHandleOnChange}
               />
             </FormGroup>
@@ -54,14 +50,14 @@ export function EditModal(props) {
             <FormGroup>
               <Input
                 name="email"
-                placeholder="cia bus bbz"
+                placeholder="email"
                 type="email"
-                required
                 onChange={useHandleOnChange}
               />
             </FormGroup>
           </Col>
         </Row>
+        {props.children}
       </Form>
     </EditModalContent>
   );
