@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { Row, Col } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { CreateAttendee } from "./Components/CreateAttendee";
@@ -21,8 +21,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
 
-//TODO: finish edit
-
 const customModalStyling = {
   content: {
     top: "50%",
@@ -35,6 +33,22 @@ const customModalStyling = {
 };
 
 export default function App() {
+  const [selectedAttendee, setSelectedAttendee] = useState("");
+
+  const [addAttendeeInfo, setAddAttendeeInfo] = useState();
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/attendees")
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setAddAttendeeInfo(data);
+      });
+  }, []);
+
   Modal.setAppElement("#root");
   const [attendee, setAttendee] = useState({
     id: "",
@@ -43,11 +57,6 @@ export default function App() {
     age: null,
     email: "",
   });
-
-  const [selectedAttendee, setSelectedAttendee] = useState("");
-
-  const [addAttendeeInfo, setAddAttendeeInfo] = useState([]);
-  const [modalIsOpen, setIsOpen] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -69,6 +78,14 @@ export default function App() {
       });
       document.querySelector("form").reset();
     }
+
+    fetch("http://localhost:8000/attendees", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(attendee),
+    }).then(() => {
+      console.log("veikia?");
+    });
   };
 
   const handleDelete = (id) => {
@@ -96,7 +113,20 @@ export default function App() {
     addAttendeeInfo.splice(editableAttendee, 1, selectedAttendee);
   };
 
-  const dateTimeAgo = moment(new Date()).fromNow();
+  let dateTimeAgo = null;
+
+  const displayTimeAgo = () => {
+    let date = new Date();
+    let todaysDayConvert = `${date.getFullYear()}-${
+      date.getMonth() + 1
+    }-${date.getDate()} ${date.getHours()}:00:00`;
+    dateTimeAgo = moment(todaysDayConvert).fromNow();
+  };
+
+  displayTimeAgo();
+  setInterval(function () {
+    displayTimeAgo();
+  }, 10000);
 
   function openModal() {
     setIsOpen(true);
@@ -118,7 +148,7 @@ export default function App() {
           Submit
         </ButtonSubmit>
       </CreateAttendee>
-      {addAttendeeInfo.length ? (
+      {addAttendeeInfo && addAttendeeInfo.length ? (
         <AttendeeList>
           {addAttendeeInfo.map((attendee) => {
             return (
@@ -160,6 +190,7 @@ export default function App() {
       ) : (
         <NoAttendees />
       )}
+
       <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
