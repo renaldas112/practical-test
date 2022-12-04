@@ -19,11 +19,6 @@ import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import useTheme from "./Hooks/ThemeContext";
 import ReactSwitch from "react-switch";
 
-//tik paleidus sita komanda terminale,
-//backend suveiks ir app'sas gaus attendees is api json'o failo
-
-//npx json-server --watch data/attendees.json --port 8000
-
 export default function App() {
   const [selectedAttendee, setSelectedAttendee] = useState("");
   const [addAttendeeInfo, setAddAttendeeInfo] = useState();
@@ -97,8 +92,7 @@ export default function App() {
     console.log(data.id);
     console.log(data);
     setEditingUser(data.id);
-
-    openModal();
+    setIsOpen(true);
   };
 
   const handleOnEditSubmit = (e) => {
@@ -111,6 +105,7 @@ export default function App() {
       console.log("Edited", attendee.id);
     });
     window.location.reload(false);
+    setIsOpen(false);
   };
 
   let dateTimeAgo = null;
@@ -127,18 +122,6 @@ export default function App() {
   setInterval(function () {
     displayTimeAgo();
   }, 10000);
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function afterOpenModal() {
-    console.log("Editing...");
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-  }
 
   return (
     <div className="main-body" id={theme}>
@@ -206,11 +189,8 @@ export default function App() {
       ) : (
         <NoAttendees />
       )}
-
       <Modal
         isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
         style={customModalStyling}
         contentLabel="Example Modal"
         id={theme}
