@@ -12,6 +12,8 @@ export const customModalStyling = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
+    border: "0",
+    boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
   },
 };
 
@@ -27,7 +29,7 @@ export function EditModal(props) {
   Modal.setAppElement("#root");
 
   return (
-    <div className="edit-modal-content">
+    <div className="edit-modal-content" id={theme}>
       <FormTitle>Edit Attendee</FormTitle>
       <Col md={12}>
         <FormGroup>

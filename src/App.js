@@ -1,3 +1,4 @@
+import "./app.css";
 import { React, useEffect, useState } from "react";
 import { Row, Col, Button } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -17,7 +18,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import useTheme from "./Hooks/ThemeContext";
 import ReactSwitch from "react-switch";
-import "./app.css";
 
 //tik paleidus sita komanda terminale,
 //backend suveiks ir app'sas gaus attendees is api json'o failo
@@ -209,6 +209,7 @@ export default function App() {
         <EditModal
           selectedAttendee={selectedAttendee}
           setSelectedAttendee={setSelectedAttendee}
+          id={theme}
         >
           <Button
             className="button-submit"
