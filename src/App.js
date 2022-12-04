@@ -19,7 +19,14 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import moment from "moment";
+import useTheme from "./Hooks/ThemeContext";
+import ReactSwitch from "react-switch";
+import "./app.css";
+
+//tik paleidus sita komanda terminale,
+//backend suveiks ir app'sas gaus attendees is api json'o failo
+
+//npx json-server --watch data/attendees.json --port 8000
 
 const customModalStyling = {
   content: {
@@ -34,9 +41,11 @@ const customModalStyling = {
 
 export default function App() {
   const [selectedAttendee, setSelectedAttendee] = useState("");
-
   const [addAttendeeInfo, setAddAttendeeInfo] = useState();
   const [modalIsOpen, setIsOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
+
+  console.log(theme)
 
   useEffect(() => {
     fetch("http://localhost:8000/attendees")
@@ -44,7 +53,6 @@ export default function App() {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         setAddAttendeeInfo(data);
       });
   }, []);
@@ -84,43 +92,44 @@ export default function App() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(attendee),
     }).then(() => {
-      console.log("veikia?");
+      console.log("Added", attendee.id);
     });
   };
 
   const handleDelete = (id) => {
     const newAttendeesList = addAttendeeInfo.filter(
-      (attend) => attend.id !== id
+      (attend) => attend.id !== id,
+      fetch(`http://localhost:8000/attendees/${id}`, {
+        method: "DELETE",
+      }).then(() => {
+        console.log("deleted", id);
+      })
     );
     setAddAttendeeInfo(newAttendeesList);
   };
 
-  let editableAttendee = undefined;
-
-  const handleEdit = (id) => {
-    editableAttendee = addAttendeeInfo.findIndex((att) => att.id === id);
-    setSelectedAttendee({
-      id: uuidv4(),
-      firstName: "",
-      lastName: "",
-      age: null,
-      email: "",
-    });
+  const handleEdit = () => {
+    openModal();
   };
 
   const handleOnEditSubmit = (id) => {
-    editableAttendee = addAttendeeInfo.findIndex((att) => att.id === id);
-    addAttendeeInfo.splice(editableAttendee, 1, selectedAttendee);
+    fetch(`http://localhost:8000/attendees/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({}),
+    }).then(() => {
+      console.log("Edited", attendee.id);
+    });
   };
 
   let dateTimeAgo = null;
 
+  let date = new Date();
   const displayTimeAgo = () => {
-    let date = new Date();
-    let todaysDayConvert = `${date.getFullYear()}-${
-      date.getMonth() + 1
-    }-${date.getDate()} ${date.getHours()}:00:00`;
-    dateTimeAgo = moment(todaysDayConvert).fromNow();
+    let todaysDayConvert = `${date.getHours()}:${
+      (date.getMinutes() < 10 ? "0" : "") + date.getMinutes()
+    }`;
+    dateTimeAgo = `Modified ${todaysDayConvert}`;
   };
 
   displayTimeAgo();
@@ -141,15 +150,20 @@ export default function App() {
   }
 
   return (
-    <>
+    <div>
+      <ReactSwitch
+        className="theme-switch"
+        onChange={toggleTheme}
+        checked={theme === "dark"}
+      />
       <MainTitle>Management Dashboard</MainTitle>
-      <CreateAttendee attendee={attendee} setAttendee={setAttendee}>
+      <CreateAttendee id={theme} attendee={attendee} setAttendee={setAttendee}>
         <ButtonSubmit className="btn" onClick={handleSubmit}>
           Submit
         </ButtonSubmit>
       </CreateAttendee>
       {addAttendeeInfo && addAttendeeInfo.length ? (
-        <AttendeeList>
+        <AttendeeList id={theme}>
           {addAttendeeInfo.map((attendee) => {
             return (
               <Attendee key={uuidv4()}>
@@ -170,7 +184,6 @@ export default function App() {
                       className="btn"
                       onClick={() => {
                         handleEdit(attendee.id);
-                        openModal();
                       }}
                     >
                       <FontAwesomeIcon icon={faPenToSquare} />
@@ -197,6 +210,7 @@ export default function App() {
         onRequestClose={closeModal}
         style={customModalStyling}
         contentLabel="Example Modal"
+        id={theme}
       >
         <EditModal
           selectedAttendee={selectedAttendee}
@@ -214,6 +228,6 @@ export default function App() {
           </ButtonSubmit>
         </EditModal>
       </Modal>
-    </>
+    </div>
   );
 }

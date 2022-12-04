@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+//sita perrasyt i css
 export const CreateAttendeeStyled = styled.div`
   width: 60%;
   margin: 10px auto;
@@ -21,6 +22,7 @@ export const MainTitle = styled.h2`
   color: #1f2667;
 `;
 
+//sita perrasyt i css
 export const MainForm = styled.div``;
 
 export const FormTitle = styled.h2`
@@ -63,6 +65,7 @@ export const ButtonDelete = styled.button`
   margin-left: 10px;
 `;
 
+//sita perrasyt i css
 export const AttendeeListStyled = styled.div`
   background-color: #fff;
   margin: 0 auto;
@@ -76,6 +79,7 @@ export const AttendeeListStyled = styled.div`
   gap: 25px;
 `;
 
+//sita perrasyt i css
 export const Attendee = styled.div`
   display: flex;
   align-items: baseline;
@@ -111,8 +115,11 @@ export const MinutesAgoStyled = styled.div`
   color: #fff;
 `;
 
-export const EditModalContent = styled.div``;
+//sita perrasyt i css
+export const EditModalContent = styled.div`
+width: 300px`;
 
+//sita perrasyt i css
 export const NoAttendeeStyled = styled.div`
   font-family: "Work Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial,
     sans-serif;
