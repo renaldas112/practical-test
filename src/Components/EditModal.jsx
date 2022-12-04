@@ -3,7 +3,6 @@ import { Col, FormGroup, Input } from "reactstrap";
 import { FormTitle } from "../StyledComponents/MyStyledComponents";
 import useTheme from "../Hooks/ThemeContext";
 
-
 export const customModalStyling = {
   content: {
     top: "50%",
@@ -18,8 +17,8 @@ export const customModalStyling = {
 };
 
 export function EditModal(props) {
-  const {theme} = useTheme();
-  
+  const { theme } = useTheme();
+
   const useHandleOnChange = (e) => {
     props.setSelectedAttendee({
       ...props.selectedAttendee,

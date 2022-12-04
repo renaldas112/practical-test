@@ -20,55 +20,49 @@ export function CreateAttendee(props) {
         className="d-flex flex-column card-body create-attendee-styled align-items-center"
         id={theme}
       >
-        <FormTitle className="form-title card-header">Create Attendee</FormTitle>
-        <Form>
+        <FormTitle className="form-title card-header">
+          Create Attendee
+        </FormTitle>
+        <Form className="create-attendee-form">
           <Row>
-            <Col md={2}>
-              <FormGroup>
-                <Input
-                  name="firstName"
-                  placeholder="First Name"
-                  type="text"
-                  onChange={useHandleOnChange}
-                  required
-                />
-              </FormGroup>
+            <Col className="create-attendee-form--input col-md-2">
+              <Input
+                name="firstName"
+                placeholder="First Name"
+                type="text"
+                onChange={useHandleOnChange}
+                required
+              />
             </Col>
-            <Col md={2}>
-              <FormGroup>
-                <Input
-                  name="lastName"
-                  placeholder="Last Name"
-                  type="text"
-                  onChange={useHandleOnChange}
-                  required
-                />
-              </FormGroup>
+            <Col className="create-attendee-form--input col-md-2">
+              <Input
+                name="lastName"
+                placeholder="Last Name"
+                type="text"
+                onChange={useHandleOnChange}
+                required
+              />
             </Col>
-            <Col md={2}>
-              <FormGroup>
-                <Input
-                  name="age"
-                  type="number"
-                  placeholder="Age"
-                  min="1"
-                  onChange={useHandleOnChange}
-                  required
-                />
-              </FormGroup>
+            <Col className="create-attendee-form--input col-md-2">
+              <Input
+                name="age"
+                type="number"
+                placeholder="Age"
+                min="1"
+                onChange={useHandleOnChange}
+                required
+              />
             </Col>
-            <Col md={2}>
-              <FormGroup>
-                <Input
-                  name="email"
-                  placeholder="Email"
-                  type="email"
-                  onChange={useHandleOnChange}
-                  required
-                />
-              </FormGroup>
+            <Col className="create-attendee-form--input col-md-2">
+              <Input
+                name="email"
+                placeholder="Email"
+                type="email"
+                onChange={useHandleOnChange}
+                required
+              />
             </Col>
-            <Col md={1}>{props.children}</Col>
+            <Col className="col-md-1">{props.children}</Col>
           </Row>
         </Form>
       </div>

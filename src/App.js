@@ -29,6 +29,7 @@ export default function App() {
   const [addAttendeeInfo, setAddAttendeeInfo] = useState();
   const [modalIsOpen, setIsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const [editingUser, setEditingUser] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:8000/attendees")
@@ -60,6 +61,7 @@ export default function App() {
       alert("Please fill in required form");
     } else {
       setAddAttendeeInfo(addAttendeeInfo.concat(attendee));
+      console.log(addAttendeeInfo);
       setAttendee({
         id: "",
         firstName: "",
@@ -91,23 +93,29 @@ export default function App() {
     setAddAttendeeInfo(newAttendeesList);
   };
 
-  const handleEdit = () => {
+  const handleEdit = (data) => {
+    console.log(data.id);
+    console.log(data);
+    setEditingUser(data.id);
+
     openModal();
   };
 
-  const handleOnEditSubmit = (id) => {
-    fetch(`http://localhost:8000/attendees/${id}`, {
+  const handleOnEditSubmit = (e) => {
+    console.log(editingUser);
+    fetch(`http://localhost:8000/attendees/${editingUser}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({}),
+      body: JSON.stringify(selectedAttendee),
     }).then(() => {
       console.log("Edited", attendee.id);
     });
+    window.location.reload(false);
   };
 
   let dateTimeAgo = null;
-
   let date = new Date();
+
   const displayTimeAgo = () => {
     let todaysDayConvert = `${date.getHours()}:${
       (date.getMinutes() < 10 ? "0" : "") + date.getMinutes()
@@ -175,9 +183,10 @@ export default function App() {
                   </AttendeeInfo>
                   <Col className="d-flex flex-row">
                     <Button
+                      id={attendee.id}
                       className="button-edit"
                       onClick={() => {
-                        handleEdit(attendee.id);
+                        handleEdit(attendee);
                       }}
                     >
                       <FontAwesomeIcon icon={faPenToSquare} />
@@ -211,14 +220,7 @@ export default function App() {
           setSelectedAttendee={setSelectedAttendee}
           id={theme}
         >
-          <Button
-            className="button-submit"
-            type="button"
-            onClick={() => {
-              handleOnEditSubmit();
-              closeModal();
-            }}
-          >
+          <Button className="button-submit" onClick={handleOnEditSubmit}>
             Submit
           </Button>
         </EditModal>

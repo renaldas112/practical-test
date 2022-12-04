@@ -1,9 +1,12 @@
-@media only screen and (min-width: 800px) {
+@media only screen and (min-width: 768px) {
   .create-attendee-styled {
     width: 60%;
   }
   .attendee-list {
     width: 60%;
+  }
+  .create-attendee-form--input {
+    width: 150px;
   }
 }
 
@@ -13,6 +16,16 @@
   }
   .attendee-info {
     flex-wrap: wrap;
+  }
+  .create-attendee-form > .row {
+    display: block;
+    flex-direction: column;
+  }
+  .create-attendee-form--input {
+    width: 150px;
+  }
+  .no-attendee {
+    font-size: 25px !important;
   }
 }
 
@@ -28,7 +41,8 @@
 
 #light .create-attendee-styled,
 #light .attendee,
-#light .edit-modal-content {
+#light .edit-modal-content,
+#light .no-attendee {
   background: #f3f3f3;
 }
 
@@ -50,7 +64,8 @@
 }
 
 #dark .create-attendee-styled,
-#dark .attendee {
+#dark .attendee,
+#dark .no-attendee {
   background: #181e2e !important;
 }
 
@@ -108,6 +123,11 @@
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
+.create-attendee-form > .row {
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
 .attendee-list {
   margin: 0 auto;
   min-height: 50vh;
@@ -119,7 +139,7 @@
   padding: 20px;
   border-radius: 10px;
   max-height: 200px;
-  width: 100%;
+  flex-basis: 50%;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
