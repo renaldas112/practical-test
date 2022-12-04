@@ -1,13 +1,11 @@
-import {
-  FormTitle,
-  AttendeeListStyled,
-} from "../StyledComponents/MyStyledComponents";
+import { FormTitle } from "../StyledComponents/MyStyledComponents";
 
 export function AttendeeList(props) {
+
   return (
     <>
-      <FormTitle>Attendee list</FormTitle>
-      <AttendeeListStyled>{props.children}</AttendeeListStyled>
+      <FormTitle className="form-title">Attendee list</FormTitle>
+      <div className="attendee-list d-flex" >{props.children}</div>
     </>
   );
 }

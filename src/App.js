@@ -1,17 +1,13 @@
 import { React, useEffect, useState } from "react";
-import { Row, Col } from "reactstrap";
+import { Row, Col, Button } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { CreateAttendee } from "./Components/CreateAttendee";
 import { AttendeeList } from "./Components/AttendeeList";
 import { NoAttendees } from "./Components/NoAttendees";
-import { EditModal } from "./Components/EditModal";
+import { customModalStyling, EditModal } from "./Components/EditModal";
 import Modal from "react-modal";
 import {
   MainTitle,
-  ButtonSubmit,
-  ButtonEdit,
-  ButtonDelete,
-  Attendee,
   AttendeeName,
   AttendeeInfo,
   MinutesAgoStyled,
@@ -28,24 +24,11 @@ import "./app.css";
 
 //npx json-server --watch data/attendees.json --port 8000
 
-const customModalStyling = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-  },
-};
-
 export default function App() {
   const [selectedAttendee, setSelectedAttendee] = useState("");
   const [addAttendeeInfo, setAddAttendeeInfo] = useState();
   const [modalIsOpen, setIsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
-
-  console.log(theme)
 
   useEffect(() => {
     fetch("http://localhost:8000/attendees")
@@ -150,53 +133,64 @@ export default function App() {
   }
 
   return (
-    <div>
-      <ReactSwitch
-        className="theme-switch"
-        onChange={toggleTheme}
-        checked={theme === "dark"}
-      />
-      <MainTitle>Management Dashboard</MainTitle>
+    <div className="main-body" id={theme}>
+      <div className="theme-switch">
+        <ReactSwitch
+          onChange={toggleTheme}
+          checked={theme === "dark"}
+          onColor="#172432"
+          onHandleColor="#27ebad"
+          uncheckedIcon={false}
+          checkedIcon={false}
+        />
+      </div>
+      <MainTitle className="main-title">Management Dashboard</MainTitle>
       <CreateAttendee id={theme} attendee={attendee} setAttendee={setAttendee}>
-        <ButtonSubmit className="btn" onClick={handleSubmit}>
+        <Button className="button-submit" onClick={handleSubmit}>
           Submit
-        </ButtonSubmit>
+        </Button>
       </CreateAttendee>
       {addAttendeeInfo && addAttendeeInfo.length ? (
         <AttendeeList id={theme}>
           {addAttendeeInfo.map((attendee) => {
             return (
-              <Attendee key={uuidv4()}>
+              <div
+                className="attendee d-flex align-items-baseline flex-column justify-content-center"
+                id={theme}
+                key={uuidv4()}
+              >
                 <Row>
-                  <AttendeeName>
+                  <AttendeeName className="attendee-text">
                     <h3>{attendee.firstName}</h3>
                     <h3>{attendee.lastName}</h3>
                   </AttendeeName>
-                  <MinutesAgoStyled>{dateTimeAgo}</MinutesAgoStyled>
+                  <MinutesAgoStyled className="minutes-ago">
+                    {dateTimeAgo}
+                  </MinutesAgoStyled>
                 </Row>
-                <Col className="d-flex border-bottom align-items-baseline">
-                  <AttendeeInfo>
+                <Col className="attendee-info d-flex border-bottom align-items-baseline">
+                  <AttendeeInfo className="attendee-text">
                     <p>Age: {attendee.age}</p>
                     <p>Email: {attendee.email}</p>
                   </AttendeeInfo>
                   <Col className="d-flex flex-row">
-                    <ButtonEdit
-                      className="btn"
+                    <Button
+                      className="button-edit"
                       onClick={() => {
                         handleEdit(attendee.id);
                       }}
                     >
                       <FontAwesomeIcon icon={faPenToSquare} />
-                    </ButtonEdit>
-                    <ButtonDelete
-                      className="btn"
+                    </Button>
+                    <Button
+                      className="button-delete"
                       onClick={() => handleDelete(attendee.id)}
                     >
                       <FontAwesomeIcon icon={faTrashCan} />
-                    </ButtonDelete>
+                    </Button>
                   </Col>
                 </Col>
-              </Attendee>
+              </div>
             );
           })}
         </AttendeeList>
@@ -216,8 +210,8 @@ export default function App() {
           selectedAttendee={selectedAttendee}
           setSelectedAttendee={setSelectedAttendee}
         >
-          <ButtonSubmit
-            className="btn"
+          <Button
+            className="button-submit"
             type="button"
             onClick={() => {
               handleOnEditSubmit();
@@ -225,7 +219,7 @@ export default function App() {
             }}
           >
             Submit
-          </ButtonSubmit>
+          </Button>
         </EditModal>
       </Modal>
     </div>

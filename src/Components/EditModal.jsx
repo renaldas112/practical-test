@@ -1,8 +1,23 @@
 import Modal from "react-modal";
-import { Form, Row, Col, FormGroup, Input } from "reactstrap";
-import { EditModalContent } from "../StyledComponents/MyStyledComponents";
+import { Col, FormGroup, Input } from "reactstrap";
+import { FormTitle } from "../StyledComponents/MyStyledComponents";
+import useTheme from "../Hooks/ThemeContext";
+
+
+export const customModalStyling = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
 
 export function EditModal(props) {
+  const {theme} = useTheme();
+  
   const useHandleOnChange = (e) => {
     props.setSelectedAttendee({
       ...props.selectedAttendee,
@@ -12,8 +27,9 @@ export function EditModal(props) {
   Modal.setAppElement("#root");
 
   return (
-    <EditModalContent>
-      <Col md={2}>
+    <div className="edit-modal-content">
+      <FormTitle>Edit Attendee</FormTitle>
+      <Col md={12}>
         <FormGroup>
           <Input
             name="firstName"
@@ -23,7 +39,7 @@ export function EditModal(props) {
           />
         </FormGroup>
       </Col>
-      <Col md={2}>
+      <Col md={12}>
         <FormGroup>
           <Input
             name="lastName"
@@ -33,7 +49,7 @@ export function EditModal(props) {
           />
         </FormGroup>
       </Col>
-      <Col md={2}>
+      <Col md={12}>
         <FormGroup>
           <Input
             name="age"
@@ -44,7 +60,7 @@ export function EditModal(props) {
           />
         </FormGroup>
       </Col>
-      <Col md={2}>
+      <Col md={12}>
         <FormGroup>
           <Input
             name="email"
@@ -55,6 +71,6 @@ export function EditModal(props) {
         </FormGroup>
       </Col>
       {props.children}
-    </EditModalContent>
+    </div>
   );
 }

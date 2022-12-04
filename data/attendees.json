@@ -1,11 +1,18 @@
 {
   "attendees": [
     {
-      "id": "2adf1118-bf4d-4ee2-9b12-fbfeb52dedc3",
+      "id": "425bf88b-1c55-408f-863b-2fcc25070115",
       "firstName": "Renaldas",
       "lastName": "Barzdaitis",
       "age": "22",
       "email": "renaldas112@gmail.com"
+    },
+    {
+      "id": "e365d320-d83b-4a97-a89c-448d05d922c9",
+      "firstName": "Renata",
+      "lastName": "Jaseviciute",
+      "age": "23",
+      "email": "renateleJas@gmail.com"
     }
   ]
 }

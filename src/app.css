@@ -1,8 +1,154 @@
+@media only screen and (min-width: 800px) {
+  .create-attendee-styled {
+    width: 60%;
+  }
+  .attendee-list {
+    width: 60%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .attendee-list {
+    flex-direction: column;
+  }
+  .attendee-info {
+    flex-wrap: wrap;
+  }
+}
+
+.theme-switch {
+  position: relative;
+}
+
 #light {
-    background-color: #fff !important;
-  }
-  
-  #dark {
-    background-color: #000 !important;
-  }
-  
+  background: url(../src/Images/background-image-light.png) center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#light .create-attendee-styled,
+#light .attendee {
+  background: #f3f3f3;
+}
+
+#light .button-submit,
+#light .button-edit,
+#light .button-delete {
+  color: #fff;
+}
+
+#light .minutes-ago {
+  background: linear-gradient(90deg, #57eeda 35%, #08c7fb 100%);
+  color: #fff;
+}
+
+#dark {
+  background: url(../src/Images/background-image-dark.png) center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#dark .create-attendee-styled,
+#dark .attendee,
+#dark .ReactModal__Overlay--open {
+  background: #181e2e;
+}
+
+#dark .ReactModal__Overlay--after--open {
+  background: #181e2e !important;
+}
+
+#dark input {
+  background: #303843;
+  border: 0;
+}
+
+#dark .form-title,
+#dark .main-title,
+#dark .attendee-text {
+  color: #a9adb9;
+}
+
+#dark .button-submit {
+  background: #00ffa5;
+  color: #08683b;
+}
+
+#dark .button-edit {
+  background: #172432;
+  color: #27ebad;
+}
+
+#dark .button-delete {
+  background: #321717;
+  color: #eb2727;
+}
+
+#dark .minutes-ago {
+  background: linear-gradient(90deg, #172432 35%, #0f2236 100%);
+  color: #27ebad;
+}
+
+.create-attendee-styled {
+  margin: 10px auto;
+  border-radius: 10px;
+  padding: 10px 50px;
+}
+
+.attendee-list {
+  margin: 0 auto;
+  min-height: 50vh;
+  padding: 10px;
+  gap: 25px;
+}
+
+.attendee {
+  padding: 20px;
+  border-radius: 10px;
+  max-height: 200px;
+  width: 100%;
+}
+
+.edit-modal-content {
+  width: 300px;
+}
+
+.no-attendee {
+  font-family: "Work Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial,
+    sans-serif;
+  color: #1f2667;
+  background-color: #fff;
+  height: 50vh;
+  width: 60%;
+  border-radius: 25px;
+  font-size: 50px;
+  margin: 0 auto;
+}
+
+.button-submit {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 168, 129, 1) 35%,
+    rgba(249, 87, 125, 1) 100%
+  );
+  border: 0;
+}
+
+.button-edit {
+  background: linear-gradient(
+    90deg,
+    rgba(62, 213, 253, 1) 35%,
+    rgba(16, 131, 248, 1) 100%
+  );
+  border: 0;
+}
+
+.button-delete {
+  background: linear-gradient(
+    90deg,
+    rgba(232, 128, 146, 1) 35%,
+    rgba(254, 42, 80, 1) 100%
+  );
+  border: 0;
+  margin-left: 10px;
+}
